@@ -4,7 +4,6 @@ from snakemake.utils import validate
 
 
 validate(config, "../config/config.schema.yaml")
-print(config)
 
 DBDIR = config['database_dir']
 VIBRANT_DBDIR= os.path.join(DBDIR,'VIBRANT')
