@@ -23,9 +23,7 @@ def get_all_samples():
                       )
         raise IOError("sampletable doesn't exist")
 
-    SampleTable = pd.read_csv(SampleTableFile, sep='\t').set_index("Samples", drop=False)
-
-    validate(SampleTable, "../config/samples.schema.yaml")
+    SampleTable = pd.read_csv(SampleTableFile, sep='\t', index_col=0)
 
     return list(SampleTable.index)
 
