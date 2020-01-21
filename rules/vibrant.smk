@@ -1,48 +1,44 @@
-
 import os
-
-def get_and_verify_config_attribute(config_attribute):
-
-    if not config_attribute in config:
-        raise IOError(f"'{config_attribute}' is expected to be in the config.yaml file or"
-                       "suplied by the '--config' comand line parameter ")
-
-    return config[config_attribute]
-
-DBDIR = get_and_verify_config_attribute('database_dir'])
+import pandas as pd
+from snakemake.utils import validate
 
 
-def get_samples():
+validate(config, "../config/config.schema.yaml")
+print(config)
 
-    SampleTableFile = get_and_verify_config_attribute('sampletable')
+DBDIR = config['database_dir']
+VIBRANT_DBDIR= os.path.join(DBDIR,'VIBRANT')
+
+
+def get_all_samples():
+
+    SampleTableFile= config["sampletable"]
 
     if not os.path.exists(SampleTableFile):
-        raise IOError(f"The configuration says I have to look for SampleTable at {SampleTableFile}\n"
+        logger.error(f"The configuration says I have to look for SampleTable at {SampleTableFile}\n"
                       "But this file doesn't exists! The SampleTable should be a table in the format: \n"
-                      "SAMPLES\tOPTIONAL_HEADER\n"
+                      "Samples\tOPTIONAL_HEADER\n"
                       "Sample1\t\n"
                       "Sample2\t\n"
                       )
+        raise IOError("sampletable doesn't exist")
 
+    SampleTable = pd.read_csv(SampleTableFile, sep='\t').set_index("Samples", drop=False)
 
-    SAMPLES = pd.read_csv(SampleTableFile, index_col=0, sep='\t').index
+    validate(SampleTable, "../config/samples.schema.yaml")
 
-    return list(SAMPLES)
-
-
-
-VIBRANT_DBDIR= os.path.join(DBDIR,'VIBRANT')
-
+    return list(SampleTable.index)
 
 
 
 rule vibrant:
     input:
-        expand("{sample}/Viruses",sample=get_samples())
+        expand("{sample}/Viruses",sample=get_all_samples())
 
-run_vibrant:
+
+rule run_vibrant:
     input:
-        contigs= "{sample}/{sample}_contigs.fasta"
+        contigs= "{sample}/{sample}_contigs.fasta",
         database= VIBRANT_DBDIR
     output:
         directory("{sample}/Viruses")
@@ -54,10 +50,11 @@ run_vibrant:
     conda:
         "../vibrant.yaml"
     params:
-        min_contig_length=3000,
-        minimum_orfs= 4,
-        plot= "-no_plot" if False else ""
+        min_contig_length=config['vibrant_min_contig_length'],
+        minimum_orfs= config['vibrant_minimum_orfs'],
+        plot= "-no_plot" if ~config['vibrant_plot'] else ""
     shell:
+        'export VIBRANT_DATA_PATH="{input.database}" ; '
         "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {output} "
         " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot}"
 
@@ -75,4 +72,4 @@ rule download_vibrant:
     threads:
         1
     shell:
-        "mkdir {output} ; cd {output} ; download-db.sh"
+        'export VIBRANT_DATA_PATH="{output}"  ; download-db.sh'

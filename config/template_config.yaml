@@ -9,3 +9,8 @@ database_dir: "databases"
 mem: 70
 time: 24
 threads: 8
+
+vibrant:
+  min_contig_length: 3000
+  minimum_orfs: 4
+  plot: false
