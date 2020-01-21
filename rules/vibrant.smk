@@ -28,7 +28,7 @@ def get_all_samples():
 
 
 
-rule vibrant:
+rule all:
     input:
         expand("{sample}/Viruses",sample=get_all_samples())
 
