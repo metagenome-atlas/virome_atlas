@@ -45,7 +45,7 @@ rule run_vibrant:
     threads:
         config.get("threads",8)
     conda:
-        "../vibrant.yaml"
+        "../envs/vibrant.yaml"
     params:
         min_contig_length=config['vibrant_min_contig_length'],
         minimum_orfs= config['vibrant_minimum_orfs'],
@@ -65,7 +65,7 @@ rule download_vibrant:
     shadow:
         "minimal"
     conda:
-        "../vibrant.yaml"
+        "../envs/vibrant.yaml"
     threads:
         1
     shell:
