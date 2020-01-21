@@ -6,7 +6,7 @@ This workflow is designed to run vibrant on the output of metagenome atlas
 
 * Silas Kieser (@silask)
 
-##Dependencies
+## Dependencies
 
 conda or vibrant
 
