@@ -42,6 +42,10 @@ rule run_vibrant:
         config.get("threads",8)
     conda:
         "../envs/vibrant.yaml"
+    log:
+        "logs/virus/vibrant_{sample}.txt"
+    benchmark:
+        "logs/benchmarks/vibrant_{sample}.txt"
     params:
         min_contig_length=config['vibrant_min_contig_length'],
         minimum_orfs= config['vibrant_minimum_orfs'],
@@ -49,7 +53,7 @@ rule run_vibrant:
     shell:
         'export VIBRANT_DATA_PATH="{input.database}" ; '
         "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {output} "
-        " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot}"
+        " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot} &> {log}"
 
 
 
