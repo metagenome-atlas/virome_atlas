@@ -28,10 +28,6 @@ def get_all_samples():
 
 
 
-rule all:
-    input:
-        expand("{sample}/Viruses",sample=get_all_samples())
-
 
 rule run_vibrant:
     input:
