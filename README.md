@@ -14,13 +14,14 @@ conda or vibrant
 
 This extension should be used after the running metagenome-atlas at least until the assembly step.
 
-    snakemake -d atlas_working_directory --use-conda --conda-prefix "path/to/store/databases/conda_envs"
 
-<!-- or define the sa:
+    ./virome_atlas atlas_working_directory path/to/store/databases {other snakemake arguments}
 
-    snakemake --config sampletable="path/to/SampleTable.tsv" database_dir="path/to/store/databases" --use-conda -->
+or directly call snakemake
+    snakemake -d atlas_working_directory --config database_dir="path/to/store/databases"
 
-For more detailed configuration see the `config.yaml`
+
+For more detailed configuration see the `config/template_config.yaml`
 
 # Cluster execution
 
