@@ -52,7 +52,7 @@ rule run_vibrant:
         plot= "-no_plot" if ~config['vibrant_plot'] else ""
     shell:
         'export VIBRANT_DATA_PATH="{input.database}" ; '
-        "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {output} "
+        "VIBRANT_run.py -i {input.contigs} -t {threads} --folder {output} "
         " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot} &> {log}"
 
 
