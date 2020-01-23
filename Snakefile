@@ -4,4 +4,4 @@ include: "rules/vibrant.smk"
 
 rule all:
     input:
-        expand("{sample}/Viruses",sample=get_all_samples())
+        expand("{sample}/VIBRANT_{sample}_contigs",sample=get_all_samples())
