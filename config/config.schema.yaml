@@ -22,7 +22,7 @@ properties:
 
   vibrant_min_contig_length:
     type: integer
-    default: 3000  
+    default: 1000  
   vibrant_minimum_orfs:
     type: integer
     default: 4
