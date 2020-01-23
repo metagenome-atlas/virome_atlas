@@ -15,14 +15,14 @@ properties:
   time:
     description: Expected running time for Vibrant in h
     type: integer
-    default: 12
+    default: 24
   threads:
     type: integer
     default: 8
 
   vibrant_min_contig_length:
     type: integer
-    default: 3000
+    default: 3000  
   vibrant_minimum_orfs:
     type: integer
     default: 4
