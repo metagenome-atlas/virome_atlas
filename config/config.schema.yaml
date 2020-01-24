@@ -5,9 +5,9 @@ properties:
     type: string
     description: path to sample file. With sample names under the Header "Samples"
     default:  samples.tsv
-  database_dir:
-    type: string
-    description: Path where databases are stored
+  # database_dir:
+  #   type: string
+  #   description: Path where databases are stored
   mem:
     description: Memory requirement in GB
     type: integer
@@ -32,5 +32,5 @@ properties:
 
 
 
-required:
-  - database_dir
+# required:
+#   - database_dir

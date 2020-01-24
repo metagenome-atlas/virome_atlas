@@ -3,4 +3,4 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - vibrant
+    - vibrant=1.0.1=2

@@ -5,8 +5,8 @@ from snakemake.utils import validate
 
 validate(config, "../config/config.schema.yaml")
 
-DBDIR = config['database_dir']
-VIBRANT_DBDIR= os.path.join(DBDIR,'VIBRANT')
+#DBDIR = config['database_dir']
+#VIBRANT_DBDIR= os.path.join(DBDIR,'VIBRANT')
 
 
 def get_all_samples():
@@ -32,7 +32,7 @@ def get_all_samples():
 rule run_vibrant:
     input:
         contigs= "{sample}/{sample}_contigs.fasta",
-        database= VIBRANT_DBDIR
+        database= "logs/installed_vibrant_db"
     output:
         directory("{sample}/Viruses")
     resources:
@@ -47,7 +47,6 @@ rule run_vibrant:
         minimum_orfs= config['vibrant_minimum_orfs'],
         plot= "-no_plot" if ~config['vibrant_plot'] else ""
     shell:
-        'export VIBRANT_DATA_PATH="{input.database}" ; '
         "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {output} "
         " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot}"
 
@@ -57,7 +56,7 @@ localrules: download_vibrant
 
 rule download_vibrant:
     output:
-        VIBRANT_DBDIR
+        touch("logs/installed_vibrant_db")
     shadow:
         "minimal"
     conda:
@@ -65,4 +64,4 @@ rule download_vibrant:
     threads:
         1
     shell:
-        'export VIBRANT_DATA_PATH="{output}"  ; download-db.sh'
+        'download-db.sh'
