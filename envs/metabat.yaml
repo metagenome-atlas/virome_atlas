@@ -3,4 +3,4 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - maxbin2 =2.2.*
+    - metabat2 =2.14.*
