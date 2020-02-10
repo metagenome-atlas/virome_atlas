@@ -10,6 +10,9 @@ mem: 70
 time: 8
 threads: 8
 
+
+
+
 vibrant:
   min_contig_length: 1000
   minimum_orfs: 4
