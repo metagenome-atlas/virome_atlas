@@ -12,7 +12,7 @@ rule get_metabat_depth_file:
     output:
         "{sample}/binning/viralbins/metabat_depth.txt"
     log:
-        "{sample}/binning/viralbins/metabat.log"
+        "{sample}/logs/binning/metabat_depth.txt"
     conda:
         "../envs/metabat.yaml"
     threads:
