@@ -1,4 +1,10 @@
 
+def gen_names_for_range(N,prefix='',start=1):
+    """generates a range of IDS with leading zeros so sorting will be ok"""
+    n_leading_zeros= len(str(N))
+    format_int=prefix+'{:0'+str(n_leading_zeros)+'d}'
+    return [format_int.format(i) for i in range(start,N+start)]
+
 
 
 BINNING_CONTIGS= "{sample}/{sample}_contigs.fasta"
@@ -78,7 +84,7 @@ rule get_unique_cluster_attribution:
             old_cluster_ids.remove(0)
 
         map_cluster_ids = dict(zip(old_cluster_ids,
-                                   utils.gen_names_for_range(
+                                   gen_names_for_range(
                                        len(old_cluster_ids),
                                         prefix="{sample}_{binner}_".format(**wildcards)
                                          )

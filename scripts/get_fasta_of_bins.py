@@ -7,6 +7,11 @@ import pandas as pd
 from Bio import SeqIO
 
 
+
+
+
+
+
 def get_fasta_of_bins(cluster_attribution, contigs, out_folder):
     """
     Creates individual fasta files for each bin using the contigs fasta and the cluster attribution.
