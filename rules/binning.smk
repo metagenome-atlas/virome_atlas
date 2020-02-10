@@ -7,8 +7,7 @@ BINNING_CONTIGS= "{sample}/{sample}_contigs.fasta"
 ## METABAT
 rule get_metabat_depth_file:
     input:
-        bam = lambda wc: expand("{sample}/sequence_alignment/{sample_reads}.bam",
-                     sample_reads = get_alls_samples_of_group(wc),
+        bam = lambda wc: expand("{sample}/sequence_alignment/{sample}.bam",
                      sample=wc.sample)
     output:
         "{sample}/binning/viralbins/metabat_depth.txt"
