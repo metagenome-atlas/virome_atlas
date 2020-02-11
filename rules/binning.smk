@@ -40,7 +40,7 @@ rule metabat:
         "{sample}/binning/viralbins/cluster_attribution.tmp",
     params:
           min_contig_len = 1500,
-          maxEdges=200
+          maxEdges=200,
           minClsSize=10000
     benchmark:
         "logs/benchmarks/binning/viralbins/{sample}.txt"
