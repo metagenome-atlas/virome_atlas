@@ -39,8 +39,9 @@ rule metabat:
     output:
         "{sample}/binning/viralbins/cluster_attribution.tmp",
     params:
-          sensitivity = 2000,
           min_contig_len = 1500,
+          maxEdges=200
+          minClsSize=10000
     benchmark:
         "logs/benchmarks/binning/viralbins/{sample}.txt"
     log:
@@ -57,7 +58,8 @@ rule metabat:
             --abdFile {input.depth_file} \
             --minContig {params.min_contig_len} \
             --numThreads {threads} \
-            --maxEdges {params.sensitivity} \
+            --minClsSize {params.minClsSize} \
+            --maxEdges {params.maxEdges} \
             --saveCls --noBinOut \
             -o {output} \
             &> {log}
