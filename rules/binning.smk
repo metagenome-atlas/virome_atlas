@@ -105,15 +105,59 @@ rule get_unique_cluster_attribution:
 #
 
 
-rule get_bins:
+checkpoint get_bins:
     input:
-        cluster_attribution = "{sample}/binning/{binner}/cluster_attribution.tsv",
+        cluster_attribution = "{sample}/binning/viralbins/cluster_attribution.tsv",
         contigs= BINNING_CONTIGS
     output:
-        directory("{sample}/binning/{binner}/bins")
+        directory("{sample}/binning/viralbins/bins")
     conda:
         "../envs/sequence_utils.yaml"
     log:
-        "{sample}/logs/binning/get_bins_{binner}.log"
+        "{sample}/logs/binning/get_bins_viralbins.log"
     script:
         "../scripts/get_fasta_of_bins.py"
+
+
+
+
+
+
+
+rule run_vibrant_bin:
+    input:
+        contigs= "{sample}/binning/viralbins/bins/{bin}.fasta",
+        database= VIBRANT_downloaded_flag
+    output:
+        directory("{sample}/Viruses/Bins/{bin}")
+    resources:
+        mem= config.get('mem',70),
+        time = config.get('time',4)
+    log:
+    "{sample}/logs/Viruses/Bins/{bin}.log"
+
+    threads:
+        config.get("threads",4)
+    conda:
+        "../envs/vibrant.yaml"
+    params:
+        min_contig_length=config['vibrant_min_contig_length'],
+        minimum_orfs= config['vibrant_minimum_orfs'],
+        plot= "-no_plot" if ~config['vibrant_plot'] else ""
+    shell:
+        "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {output} "
+        " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot} &> {log}"
+
+def all_bins_input(wildcards):
+
+    bin_folder = checkpoints.get_bins.get(**wildcards).output
+
+    bins= glob_wildcards(bin_folder+"/{bin}.fasta").bin
+
+    return expand("{sample}/Viruses/Bins/{bin}",bin=bins,**wildcards)
+
+rule all_bins:
+    input:
+        all_bins_input
+    output:
+        touch("{sample}/Viruses/Bins/processed_all_bins")

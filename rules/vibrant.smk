@@ -7,7 +7,7 @@ validate(config, "../config/config.schema.yaml")
 
 DBDIR = config['database_dir']
 #VIBRANT_DBDIR= os.path.join(DBDIR,'VIBRANT')
-VIBRANT_dlownloaded_flag=os.path.join(DBDIR,'downloaded_vibrant_data')
+VIBRANT_downloaded_flag=os.path.join(DBDIR,'downloaded_vibrant_data')
 
 def get_all_samples():
 
@@ -32,7 +32,7 @@ def get_all_samples():
 rule run_vibrant:
     input:
         contigs= "{sample}/{sample}_contigs.fasta",
-        database= VIBRANT_dlownloaded_flag
+        database= VIBRANT_downloaded_flag
     output:
         directory("{sample}/Viruses")
     resources:
@@ -56,7 +56,7 @@ localrules: download_vibrant
 
 rule download_vibrant:
     output:
-        touch(VIBRANT_dlownloaded_flag)
+        touch(VIBRANT_downloaded_flag)
     shadow:
         "minimal"
     conda:
