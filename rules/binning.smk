@@ -150,7 +150,7 @@ rule run_vibrant_bin:
 
 def all_bins_input(wildcards):
 
-    bin_folder = checkpoints.get_bins.get(**wildcards).output
+    bin_folder = checkpoints.get_bins.get(**wildcards).output[0]
 
     bins= glob_wildcards(bin_folder+"/{bin}.fasta").bin
 
