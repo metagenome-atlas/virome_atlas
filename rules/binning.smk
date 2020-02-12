@@ -156,7 +156,7 @@ def all_bins_input(wildcards):
 
     return expand("{sample}/Viruses/Bins/{bin}",bin=bins,**wildcards)
 
-rule all_bins:
+rule all_bins_sample:
     input:
         all_bins_input
     output:
