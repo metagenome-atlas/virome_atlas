@@ -134,8 +134,7 @@ rule run_vibrant_bin:
         mem= config.get('mem',70),
         time = config.get('time',4)
     log:
-    "{sample}/logs/Viruses/Bins/{bin}.log"
-
+        "{sample}/logs/Viruses/Bins/{bin}.log"
     threads:
         config.get("threads",4)
     conda:
@@ -146,7 +145,7 @@ rule run_vibrant_bin:
         plot= "-no_plot" if ~config['vibrant_plot'] else ""
     shell:
         "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {output} "
-        " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot} &> {log}"
+        " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot} 2> {log}"
 
 def all_bins_input(wildcards):
 
