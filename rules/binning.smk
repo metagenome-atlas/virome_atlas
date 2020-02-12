@@ -129,12 +129,12 @@ rule run_vibrant_bin:
         contigs= "{sample}/binning/viralbins/bins/{bin}.fasta",
         database= VIBRANT_downloaded_flag
     output:
-        directory("{sample}/Viruses/Bins/{bin}")
+        directory("{sample}/Viruses/Bins/VIBRANT_{bin}")
     resources:
         mem= config.get('mem',70),
         time = config.get('time',4)
     log:
-        "{sample}/logs/Viruses/Bins/{bin}.log"
+        "{sample}/Viruses/Bins/VIBRANT_log_{bin}.log"
     threads:
         config.get("threads",4)
     conda:
@@ -144,8 +144,8 @@ rule run_vibrant_bin:
         minimum_orfs= config['vibrant_minimum_orfs'],
         plot= "-no_plot" if ~config['vibrant_plot'] else ""
     shell:
-        "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {output} "
-        " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot} 2> {log}"
+        "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {wildcards.sample}/Viruses/Bins/ "
+        " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot}"
 
 def all_bins_input(wildcards):
 
@@ -153,7 +153,7 @@ def all_bins_input(wildcards):
 
     bins= glob_wildcards(bin_folder+"/{bin}.fasta").bin
 
-    return expand("{sample}/Viruses/Bins/{bin}",bin=bins,**wildcards)
+    return expand("{sample}/Viruses/Bins/VIBRANT_{bin}",bin=bins,**wildcards)
 
 rule all_bins_sample:
     input:
