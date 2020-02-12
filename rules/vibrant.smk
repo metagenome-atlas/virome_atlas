@@ -6,8 +6,8 @@ from snakemake.utils import validate
 validate(config, "../config/config.schema.yaml")
 
 DBDIR = config['database_dir']
-#VIBRANT_DBDIR= os.path.join(DBDIR,'VIBRANT')
-VIBRANT_downloaded_flag=os.path.join(DBDIR,'downloaded_vibrant_data')
+VIBRANT_DBDIR= os.path.join(DBDIR,'VIBRANT')
+VIBRANT_downloaded_flag=os.path.join(VIBRANT_DBDIR,'downloaded_vibrant_data')
 
 def get_all_samples():
 
