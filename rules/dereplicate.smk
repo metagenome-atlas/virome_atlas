@@ -2,6 +2,10 @@ import os,sys
 include: 'sample_table.smk'
 
 
+rule dereplicate:
+    input:
+        "viruses/bbsketch/dists.tsv"
+
 rule sketch:
     input:
         expand("{sample}/viruses/.../{sample}_contigs.phages_combined.fna",sample=get_all_samples())
