@@ -1,7 +1,7 @@
 
 
 include: "rules/vibrant.smk"
-include: "rules/binning.smk"
+include: "rules/dereplicate.smk"
 
 rule all:
     input:
@@ -11,6 +11,8 @@ rule all:
 rule all_bins:
     input:
         expand("{sample}/binning/viralbins/cluster_attribution.tsv",sample=get_all_samples())
+
+
 
 
 for r in workflow.rules:
