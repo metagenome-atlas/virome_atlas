@@ -1,5 +1,6 @@
+import os
 
-
+configfile: os.path.join(os.path.dirname(workflow.snakefile),"config/default_config.yaml")
 include: "rules/vibrant.smk"
 include: "rules/dereplicate.smk"
 
@@ -12,7 +13,9 @@ rule all_bins:
     input:
         expand("{sample}/binning/viralbins/cluster_attribution.tsv",sample=get_all_samples())
 
-
+rule dereplicate:
+    input:
+        "viruses/bbsketch/dists.tsv"
 
 
 for r in workflow.rules:

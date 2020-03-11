@@ -2,9 +2,7 @@ import os,sys
 include: 'sample_table.smk'
 
 
-rule dereplicate:
-    input:
-        "viruses/bbsketch/dists.tsv"
+
 
 rule sketch:
     input:
