@@ -44,8 +44,6 @@ rule allvall:
         "minimal"
     conda:
         "../envs/bbmap.yaml"
-    resources:
-        mem= config['mem']['large']
     benchmark:
         "logs/benchmark/bbsketch/alltoall_viruses.txt"
     log:
