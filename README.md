@@ -21,7 +21,7 @@ or directly call snakemake
     snakemake -d atlas_working_directory --config database_dir="path/to/store/databases"
 
 
-For more detailed configuration see the `config/template_config.yaml`
+For more detailed configuration see the `config/default_config.yaml`
 
 # Cluster execution
 
