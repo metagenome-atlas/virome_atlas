@@ -6,7 +6,8 @@ include: 'sample_table.smk'
 
 rule sketch:
     input:
-        expand("{sample}/viruses/.../{sample}_contigs.phages_combined.fna",sample=get_all_samples())
+        expand("{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
+               sample=get_all_samples())
     output:
         out="viruses/bbsketch/combined.sketch.gz"
     params:
