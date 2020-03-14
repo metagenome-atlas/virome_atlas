@@ -16,7 +16,9 @@ rule sketch:
         overwrite=True,
         command= "bbsketch.sh persequence",
     resources:
-        time= 5
+        time= 10
+    shadow:
+        "minimal"
     log:
         "logs/viruses/sketch.log"
     benchmark:
