@@ -6,7 +6,7 @@ rule get_all_contigs:
         expand("{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
                sample=get_all_samples())
     output:
-        pipe("viruses/concatenated.fasta")
+        temp("viruses/concatenated.fasta")
     shell:
         "cat {input} > {output}"
 
@@ -25,9 +25,9 @@ rule deduplicate:
     shadow:
         "minimal"
     log:
-        "logs/viruses/dedublicate.log"
+        "logs/viruses/deduplicate.log"
     benchmark:
-        "logs/benchmark/dedublicate_viruses.txt"
+        "logs/benchmark/deduplicate_viruses.txt"
     conda:
         "../envs/bbmap.yaml"
     threads:
@@ -41,7 +41,7 @@ rule sketch:
     input:
         rules.deduplicate.output
     output:
-        out="viruses/bbsketch/dedublicated.sketch.gz"
+        out="viruses/bbsketch/deduplicated.sketch.gz"
     params:
         k= config['bbsketch']['k'],
         translate=True,
