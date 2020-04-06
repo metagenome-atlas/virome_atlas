@@ -12,13 +12,22 @@ VIBRANT_downloaded_flag=os.path.join(VIBRANT_DBDIR,'downloaded_vibrant_data')
 include: 'sample_table.smk'
 
 
+VIBRANT_OUTPUT_CONTIGS= "{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna"
+VIBRANT_OUTPUT_TABLES= [
+    "{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_results_{sample}_contigs/VIBRANT_genome_quality_{sample}_contigs.tsv",
+    "{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_results_{sample}_contigs/VIBRANT_summary_results_{sample}_contigs.tsv",
+    "{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_results_{sample}_contigs/VIBRANT_annotations_{sample}_contigs.tsv"
+]
 
 rule run_vibrant:
     input:
         contigs= "{sample}/{sample}_contigs.fasta",
         database= VIBRANT_downloaded_flag
     output:
-        directory("{sample}/Viruses")
+        VIBRANT_OUTPUT_CONTIGS,
+        VIBRANT_OUTPUT_TABLES
+    params:
+        folder= "{sample}/Viruses"
     resources:
         mem= config.get('mem',70),
         time = config.get('time',24)
@@ -31,7 +40,7 @@ rule run_vibrant:
         minimum_orfs= config['vibrant_minimum_orfs'],
         plot= "-no_plot" if ~config['vibrant_plot'] else ""
     shell:
-        "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {output} "
+        "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {params.folder} "
         " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot}"
 
 

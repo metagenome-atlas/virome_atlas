@@ -11,7 +11,8 @@ rule all:
 
 rule all_bins:
     input:
-        expand("{sample}/binning/viralbins/cluster_attribution.tsv",sample=get_all_samples())
+        expand(VIBRANT_OUTPUT_CONTIGS,sample=get_all_samples()),
+        expand(VIBRANT_OUTPUT_TABLES,sample=get_all_samples())
 
 rule dereplicate:
     input:
