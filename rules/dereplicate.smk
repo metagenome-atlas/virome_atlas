@@ -6,7 +6,7 @@ rule get_all_contigs:
         expand("{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
                sample=get_all_samples())
     output:
-        temp("viruses/concatenated.fasta")
+        pipe("viruses/concatenated.fasta")
     shell:
         "cat {input} > {output}"
 
@@ -92,8 +92,3 @@ rule allvall:
         config['threads']
     script:
         "../scripts/runBB.py"
-
-
-#shHF7/Viruses/VIBRANT_shHF7_contigs/VIBRANT_results_shHF7_contigs/VIBRANT_genome_quality_shHF7_contigs.tsv
-# shHF7/Viruses/VIBRANT_shHF7_contigs/VIBRANT_results_shHF7_contigs/VIBRANT_summary_results_shHF7_contigs.tsv
-#shHF7/Viruses/VIBRANT_shHF7_contigs/VIBRANT_results_shHF7_contigs/VIBRANT_annotations_shHF7_contigs.tsv
