@@ -39,7 +39,7 @@ rule deduplicate:
 
 rule sketch:
     input:
-        rules.dedublicate.output
+        rules.deduplicate.output
     output:
         out="viruses/bbsketch/dedublicated.sketch.gz"
     params:
