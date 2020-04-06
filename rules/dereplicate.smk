@@ -1,22 +1,55 @@
 import os,sys
 include: 'sample_table.smk'
 
+rule get_all_contigs:
+    input:
+        expand("{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
+               sample=get_all_samples())
+    output:
+        pipe("viruses/concatenated.fasta")
+    shell:
+        "cat {input} > {output}"
+
+
+rule deduplicate:
+    input:
+        input=rules.get_all_contigs.output
+    output:
+        out="viruses/deduplicated.fasta.gz"
+    params:
+        minoverlap=50,
+        maxedits=10,
+        command= "dedupe.sh findoverlap cluster processclusters ",
+    resources:
+        time= 10
+    shadow:
+        "minimal"
+    log:
+        "logs/viruses/dedublicate.log"
+    benchmark:
+        "logs/benchmark/dedublicate_viruses.txt"
+    conda:
+        "../envs/bbmap.yaml"
+    threads:
+        config['threads']
+    script:
+        "../scripts/runBB.py"
 
 
 
 rule sketch:
     input:
-        expand("{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
-               sample=get_all_samples())
+        rules.dedublicate.output
     output:
-        out="viruses/bbsketch/combined.sketch.gz"
+        out="viruses/bbsketch/dedublicated.sketch.gz"
     params:
         k= config['bbsketch']['k'],
         translate=True,
         overwrite=True,
         command= "bbsketch.sh persequence",
     resources:
-        time= 10
+        time= 10,
+        mem= config['mem']
     shadow:
         "minimal"
     log:
@@ -55,3 +88,8 @@ rule allvall:
         config['threads']
     script:
         "../scripts/runBB.py"
+
+
+#shHF7/Viruses/VIBRANT_shHF7_contigs/VIBRANT_results_shHF7_contigs/VIBRANT_genome_quality_shHF7_contigs.tsv
+# shHF7/Viruses/VIBRANT_shHF7_contigs/VIBRANT_results_shHF7_contigs/VIBRANT_summary_results_shHF7_contigs.tsv
+#shHF7/Viruses/VIBRANT_shHF7_contigs/VIBRANT_results_shHF7_contigs/VIBRANT_annotations_shHF7_contigs.tsv
