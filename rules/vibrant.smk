@@ -26,8 +26,6 @@ rule run_vibrant:
     output:
         VIBRANT_OUTPUT_CONTIGS,
         VIBRANT_OUTPUT_TABLES
-    params:
-        folder= "{sample}/Viruses"
     resources:
         mem= config.get('mem',70),
         time = config.get('time',24)
@@ -38,7 +36,8 @@ rule run_vibrant:
     params:
         min_contig_length=config['vibrant_min_contig_length'],
         minimum_orfs= config['vibrant_minimum_orfs'],
-        plot= "-no_plot" if ~config['vibrant_plot'] else ""
+        plot= "-no_plot" if ~config['vibrant_plot'] else "",
+        folder= "{sample}/Viruses"
     shell:
         "VIBRANT_run.py -i {input.contigs} -t {threads} -folder {params.folder} "
         " -l {params.min_contig_length} -o {params.minimum_orfs} {params.plot}"
