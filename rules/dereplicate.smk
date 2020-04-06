@@ -13,15 +13,19 @@ rule get_all_contigs:
 
 rule deduplicate:
     input:
-        input=rules.get_all_contigs.output
+        rules.get_all_contigs.output
     output:
         out="viruses/deduplicated.fasta.gz"
     params:
         minoverlap=50,
         maxedits=10,
-        command= "dedupe.sh findoverlap cluster processclusters ",
+        findoverlap=True,
+        cluster=True,
+        processclusters=True,
+        command= lambda wc,input: f"cat {input[0]} | dedupe.sh  in=stdin.fasta",
     resources:
-        time= 10
+        time= 1,
+        mem=5
     shadow:
         "minimal"
     log:
