@@ -1,28 +1,29 @@
 import os,sys
 include: 'sample_table.smk'
 
-rule get_all_contigs:
-    input:
-        expand("{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
-               sample=get_all_samples())
-    output:
-        pipe("viruses/concatenated.fasta")
-    shell:
-        "cat {input} > {output}"
 
 
 rule deduplicate:
     input:
-        rules.get_all_contigs.output
+        expand("{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
+               sample=get_all_samples())
     output:
         out="viruses/deduplicated.fasta.gz"
     params:
         minoverlap=50,
+        k=16,
         maxedits=10,
         findoverlap=True,
         cluster=True,
         processclusters=True,
-        command= lambda wc,input: f"cat {input[0]} | dedupe.sh  in=stdin.fasta",
+        fixcanoncontradictions=True,
+        fixoffsetcontradictions=True,
+        maxspanningtree=True,
+        numaffixmaps=5,
+        minidentity=95,
+        pickbestrepresentative=True,
+        input= lambda wc, input: ','.join(input) ,
+        command= "dedupe.sh ",
     resources:
         time= 1,
         mem=5
