@@ -22,7 +22,7 @@ VIBRANT_OUTPUT_TABLES= [
 rule run_vibrant:
     input:
         contigs= "{sample}/{sample}_contigs.fasta",
-        database= VIBRANT_downloaded_flag
+        database= ancient(VIBRANT_downloaded_flag)
     output:
         VIBRANT_OUTPUT_CONTIGS,
         VIBRANT_OUTPUT_TABLES
