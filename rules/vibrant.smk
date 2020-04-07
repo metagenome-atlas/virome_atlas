@@ -55,7 +55,7 @@ rule symlink:
         VIBRANT_OUTPUT_CONTIGS,
         VIBRANT_OUTPUT_TABLES
     run:
-
+        import common import io
         io.symlink_relative([f"VIBRANT_phages_{wildcards.sample}_contigs",
                              f"VIBRANT_results_{wildcards.sample}_contigs"
                              ],
