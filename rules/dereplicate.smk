@@ -25,8 +25,8 @@ rule deduplicate:
         input= lambda wc, input: ','.join(input) ,
         command= "dedupe.sh ",
     resources:
-        time= 1,
-        mem=5
+        time= 2,
+        mem=25
     shadow:
         "minimal"
     log:
