@@ -49,8 +49,6 @@ localrules: download_vibrant
 rule download_vibrant:
     output:
         touch(VIBRANT_downloaded_flag)
-    shadow:
-        "minimal"
     conda:
         "../envs/vibrant.yaml"
     threads:

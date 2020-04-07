@@ -53,8 +53,8 @@ rule sketch:
         overwrite=True,
         command= "bbsketch.sh persequence",
     resources:
-        time= 10,
-        mem= config['mem']
+        time= 1,
+        mem= 1
     shadow:
         "minimal"
     log:
@@ -91,5 +91,8 @@ rule allvall:
         "logs/virueses/alltoall.log"
     threads:
         config['threads']
+    resources:
+        time= 1,
+        mem= 1
     script:
         "../scripts/runBB.py"
