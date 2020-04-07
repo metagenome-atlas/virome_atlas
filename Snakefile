@@ -1,8 +1,8 @@
 import os,sys
 
 configfile: os.path.join(os.path.dirname(workflow.snakefile),"config/default_config.yaml")
-sys.path.append(os.path.join(os.path.dirname(workflow.snakefile),"scripts")
-                
+sys.path.append(os.path.join(os.path.dirname(workflow.snakefile),"scripts"))
+
 include: "rules/vibrant.smk"
 include: "rules/dereplicate.smk"
 
