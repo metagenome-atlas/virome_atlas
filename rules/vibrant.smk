@@ -47,21 +47,24 @@ localrules: symlink
 ruleorder: symlink > run_vibrant
 rule symlink:
     input:
-        "{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
-        "{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_results_{sample}_contigs/VIBRANT_genome_quality_{sample}_contigs.tsv",
+        contigs="{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
+        results=["{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_results_{sample}_contigs/VIBRANT_genome_quality_{sample}_contigs.tsv",
         "{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_results_{sample}_contigs/VIBRANT_summary_results_{sample}_contigs.tsv",
         "{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_results_{sample}_contigs/VIBRANT_annotations_{sample}_contigs.tsv"
+        ]
     output:
-        VIBRANT_OUTPUT_CONTIGS,
-        VIBRANT_OUTPUT_TABLES
+        contigs=VIBRANT_OUTPUT_CONTIGS,
+        results=VIBRANT_OUTPUT_TABLES
     run:
         from common import io
 
-        io.symlink_relative([f"VIBRANT_phages_{wildcards.sample}_contigs",
-                             f"VIBRANT_results_{wildcards.sample}_contigs"
-                             ],
-                            input_dir = f"{wildcards.sample}/Viruses/VIBRANT_{wildcards.sample}_contigs",
-                            output_dir = f"{wildcards.sample}/Viruses"
+        io.symlink_relative([ os.path.basename(input.contigs)  ],
+                            input_dir = os.path.dirname(input.contigs),
+                            output_dir = os.path.dirname(output.contigs)
+                            )
+        io.symlink_relative([ os.path.basename(f) for f in input.results  ],
+                            input_dir = os.path.dirname(input.results[0]),
+                            output_dir = os.path.dirname(output.results[0])
                             )
 
 
