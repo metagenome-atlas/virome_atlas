@@ -5,7 +5,7 @@ include: 'sample_table.smk'
 
 rule deduplicate:
     input:
-        expand("{sample}/Viruses/VIBRANT_{sample}_contigs/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
+        expand("{sample}/Viruses/VIBRANT_phages_{sample}_contigs/{sample}_contigs.phages_combined.fna",
                sample=get_all_samples())
     output:
         out="viruses/deduplicated.fasta.gz"
