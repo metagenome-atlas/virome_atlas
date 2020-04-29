@@ -80,3 +80,15 @@ rule download_vibrant:
         1
     shell:
         'download-db.sh'
+
+
+rule combine_quality:
+    input:
+        expand(VIBRANT_OUTPUT_TABLES[0],
+               sample=get_all_samples())
+    output:
+        "viruses/viruses_quality_stats.tsv.gz"
+    run:
+        from common import io
+
+        io.pandas_concat(input,output[0])

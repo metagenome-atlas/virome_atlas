@@ -18,7 +18,8 @@ rule all_bins:
 
 rule dereplicate:
     input:
-        "viruses/bbsketch/dists.tsv"
+        "viruses/bbsketch/dists.tsv",
+        "viruses/viruses_quality_stats.tsv.gz"
 
 
 for r in workflow.rules:
